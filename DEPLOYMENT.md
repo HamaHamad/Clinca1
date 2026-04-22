@@ -81,11 +81,13 @@ git push -u origin main
 4. Click "Import"
 
 #### Configure Build Settings
-- **Framework Preset**: Next.js
-- **Root Directory**: `web` (important!)
-- **Build Command**: `npm run build`
-- **Output Directory**: `.next`
-- **Install Command**: `npm install`
+**CRITICAL: Click "Edit" next to Root Directory**
+- **Framework Preset**: Next.js (auto-detected)
+- **Root Directory**: `web` ⚠️ **MUST SET THIS!**
+- **Build Command**: Leave default (`npm run build`)
+- **Output Directory**: Leave default (`.next`)
+- **Install Command**: Leave default (`npm install`)
+- **Node.js Version**: 20.x (recommended)
 
 #### Add Environment Variables
 Click "Environment Variables" and add these:

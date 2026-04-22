@@ -8,11 +8,7 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    serverActions: {
-      bodySizeLimit: '10mb', // For image uploads
-    },
-  },
+  serverExternalPackages: ['@supabase/ssr'],
 }
 
 export default nextConfig
