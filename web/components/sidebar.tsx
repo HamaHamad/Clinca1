@@ -7,7 +7,7 @@ import {
   LayoutDashboard,
   Users,
   Stethoscope,
-  Flask,
+  FlaskConical,
   Pill,
   Calendar,
   Settings,
@@ -37,7 +37,7 @@ const navigation = [
   {
     name: 'Lab Reports',
     href: '/lab-reports',
-    icon: Flask,
+    icon: FlaskConical,
   },
   {
     name: 'Prescriptions',
