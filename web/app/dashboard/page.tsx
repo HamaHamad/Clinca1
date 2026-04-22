@@ -4,8 +4,10 @@ import { PatientList } from '@/components/patient-list'
 import { StatsCard } from '@/components/stats-card'
 import { Users, FileText, Activity, Calendar } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default async function DashboardPage() {
-const supabase = await createClient()
+  const supabase = await createClient()
   
   const {
     data: { user },
@@ -13,7 +15,6 @@ const supabase = await createClient()
 
   if (!user) return null
 
-  // Get user's clinic
   const { data: profile } = await supabase
     .from('profiles')
     .select('clinic_id')
@@ -22,27 +23,23 @@ const supabase = await createClient()
 
   if (!profile?.clinic_id) return null
 
-  // Fetch dashboard stats
   const [patientsCount, consultationsToday, pendingLabs, upcomingAppointments] = await Promise.all([
     supabase
       .from('patients')
       .select('id', { count: 'exact', head: true })
       .eq('clinic_id', profile.clinic_id)
       .eq('is_active', true),
-    
     supabase
       .from('consultations')
       .select('id', { count: 'exact', head: true })
       .eq('clinic_id', profile.clinic_id)
       .gte('visit_date', new Date().toISOString().split('T')[0]),
-    
     supabase
       .from('lab_reports')
       .select('id', { count: 'exact', head: true })
       .eq('clinic_id', profile.clinic_id)
       .eq('doctor_reviewed', false)
       .eq('status', 'completed'),
-    
     supabase
       .from('appointments')
       .select('id', { count: 'exact', head: true })
@@ -51,7 +48,6 @@ const supabase = await createClient()
       .eq('status', 'scheduled')
   ])
 
-  // Recent patients
   const { data: recentPatients } = await supabase
     .from('patients')
     .select('*')
@@ -61,7 +57,6 @@ const supabase = await createClient()
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
         <p className="text-muted-foreground">
@@ -69,7 +64,6 @@ const supabase = await createClient()
         </p>
       </div>
 
-      {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatsCard
           title="Total Patients"
@@ -78,7 +72,6 @@ const supabase = await createClient()
           icon={Users}
           trend={null}
         />
-        
         <StatsCard
           title="Consultations Today"
           value={consultationsToday.count || 0}
@@ -86,7 +79,6 @@ const supabase = await createClient()
           icon={Calendar}
           trend={null}
         />
-        
         <StatsCard
           title="Pending Lab Reviews"
           value={pendingLabs.count || 0}
@@ -95,7 +87,6 @@ const supabase = await createClient()
           trend={null}
           alert={pendingLabs.count && pendingLabs.count > 5}
         />
-        
         <StatsCard
           title="Upcoming Appointments"
           value={upcomingAppointments.count || 0}
@@ -105,20 +96,16 @@ const supabase = await createClient()
         />
       </div>
 
-      {/* Recent Patients */}
       <Card>
         <CardHeader>
           <CardTitle>Recent Patients</CardTitle>
-          <CardDescription>
-            Patients registered in the last 30 days
-          </CardDescription>
+          <CardDescription>Patients registered in the last 30 days</CardDescription>
         </CardHeader>
         <CardContent>
           <PatientList patients={recentPatients || []} />
         </CardContent>
       </Card>
 
-      {/* Quick Actions */}
       <div className="grid gap-4 md:grid-cols-3">
         <Card className="cursor-pointer hover:bg-accent transition-colors">
           <CardHeader>
@@ -126,14 +113,12 @@ const supabase = await createClient()
             <CardDescription>Register a new patient</CardDescription>
           </CardHeader>
         </Card>
-        
         <Card className="cursor-pointer hover:bg-accent transition-colors">
           <CardHeader>
             <CardTitle className="text-base">Start Consultation</CardTitle>
             <CardDescription>Begin a patient visit</CardDescription>
           </CardHeader>
         </Card>
-        
         <Card className="cursor-pointer hover:bg-accent transition-colors">
           <CardHeader>
             <CardTitle className="text-base">Upload Lab Report</CardTitle>
