@@ -10,10 +10,11 @@
     "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@supabase-anon-key",
     "OPENAI_API_KEY": "@openai-api-key"
   },
-  "build": {
-    "env": {
-      "NEXT_PUBLIC_SUPABASE_URL": "@supabase-url",
-      "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@supabase-anon-key"
-    }
-  }
+{
+  "buildCommand": "cd web && npm run build",
+  "devCommand": "cd web && npm run dev",
+  "installCommand": "cd web && npm install",
+  "framework": "nextjs",
+  "outputDirectory": "web/.next",
+  "regions": ["iad1"]
 }
